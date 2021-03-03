@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: shib-sp-svc
+  labels:
+    name: shib-sp-svc
+    app: fossFund-nominate
+spec:
+  selector:
+    role: shibboleth
+  ports:
+    - port: 8091
+      targetPort: 80
+      protocol: TCP
+      name: http
+  type: NodePort

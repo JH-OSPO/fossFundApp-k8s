@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shibboleth-sp
+  labels:
+      app: fossFund-nomination
+      role: shibboleth
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: fossFund-nomination
+      role: shibboleth
+  template:
+    metadata:
+      labels:
+        app: fossFund-nomination
+        role: shibboleth
+    spec:
+      containers:
+        - name: shibboleth-sp
+          image: ghcr.io/jh-ospo/shibboleth-sp:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: shibboleth-cert
+              mountPath: "/var/secrets/shibboleth"
+              readOnly: true
+          command: ["/k8s-entrypoint.sh"]
+          imagePullPolicy: Always
+      volumes:
+        - name: shibboleth-cert
+          secret:
+            secretName: shib
+            items:
+              - key: tls.crt
+                path: sp-cert.pem
+              - key: tls.key
+                path: sp-key.pem
+              - key: shibconf
+                path: shibboleth2.xml

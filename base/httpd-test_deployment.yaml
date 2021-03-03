@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-test
+  labels:
+    role: http-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: http-test
+  template:
+    metadata:
+      labels:
+        role: http-test
+    spec:
+      containers:
+        - name: http-test
+          image: httpd:2.4.46-alpine
+          ports:
+            - containerPort: 80
+              

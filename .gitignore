@@ -1,0 +1,6 @@
+
+# ignore auto generated files for persistent volumes
+*pvc.yaml
+*pv.yaml
+overlays/*/*/volumes/*
+overlays/*/*/volumes/kustomization.yaml

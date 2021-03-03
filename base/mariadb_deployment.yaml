@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  labels:
+    app: fossfund-nomination
+    role: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: database
+      app: fossFund-nomination
+  template:
+    metadata:
+      labels:
+        role: database
+        app: fossFund-nomination
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10.5.8
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: root_password
+
