@@ -4,3 +4,11 @@ kind: Kustomization
 bases:
   - ../../../base
   - volumes/
+
+resources:
+  - namespace.yaml
+  - mariadb-secrets-sealed.yaml
+  - shibboleth-secrets-sealed.yaml
+  - loadbalancer.yaml
+
+namespace: prod

@@ -19,7 +19,8 @@ spec:
     spec:
       containers:
         - name: shibboleth-sp
-          image: ghcr.io/jh-ospo/shibboleth-sp:latest
+          image: ghcr.io/jh-ospo/shibboleth-sp:v0.33
+          imagePullPolicy: Always
           ports:
             - containerPort: 80
           volumeMounts:
@@ -27,7 +28,6 @@ spec:
               mountPath: "/var/secrets/shibboleth"
               readOnly: true
           command: ["/k8s-entrypoint.sh"]
-          imagePullPolicy: Always
       volumes:
         - name: shibboleth-cert
           secret:
@@ -39,3 +39,5 @@ spec:
                 path: sp-key.pem
               - key: shibconf
                 path: shibboleth2.xml
+
+        

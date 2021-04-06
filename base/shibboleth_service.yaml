@@ -5,12 +5,15 @@ metadata:
   labels:
     name: shib-sp-svc
     app: fossFund-nominate
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+    external-dns.alpha.kubernetes.io/hostname: prod.fossfund-k8s.cloud.library.jhu.edu
 spec:
   selector:
     role: shibboleth
   ports:
-    - port: 8091
-      targetPort: 80
+    - port: 443
+      targetPort: 443
       protocol: TCP
       name: http
   type: NodePort

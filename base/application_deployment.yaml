@@ -1,4 +1,73 @@
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  
+  name: nomination
+  labels:
+    app: fossfund-nomination
+    role: flask-application-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nominate-flask
+  template:
+    metadata:
+      labels:
+        app: nominate-flask
+        role: flask-application-service
+    spec:
+      initContainers:
+        - image: ghcr.io/jhu-library-operations/init/wait-for-db:36c5712
+          name: wait-for-db
+          imagePullPolicy: Always
+          env:
+            - name: MYSQL_HOST
+              value: mariadb-service
+        - image: ghcr.io/jh-ospo/nomination-init-db:v0.2
+          name: init-db
+          imagePullPolicy: Always
+          env:
+            - name: DATABASE_NAME
+              value: nominations
+            - name: DATABASE_HOST
+              value: mariadb-service
+            - name: DATABASE_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: root_password
+            - name: DB_APP_USER
+              value: nominations
+            - name: DB_APP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: user_password
+        
+      containers:
+        - name: fossfund-app
+          imagePullPolicy: Always
+          image: ghcr.io/jh-ospo/fossfund-flask:v0.24
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DB_TYPE
+              value: mysql
+            - name: DB_NAME
+              value: nominations
+            - name: DB_HOST
+              value: mariadb-service
+            - name: DB_USER
+              value: nominations
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: user_password
+            - name: DATABASE_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb
+                  key: root_password
+
+            

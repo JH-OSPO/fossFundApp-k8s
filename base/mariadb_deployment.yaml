@@ -28,4 +28,11 @@ spec:
                 secretKeyRef:
                   name: mariadb
                   key: root_password
-
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: database
+              
+      volumes:
+        - name: database
+          persistentVolumeClaim:
+            claimName: prod-databasevol

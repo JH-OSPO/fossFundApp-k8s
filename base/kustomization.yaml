@@ -3,8 +3,9 @@ kind: Kustomization
 
 resources:
   - shibboleth_deployment.yaml
-  - shibboleth_service.yaml
   - httpd-test_deployment.yaml
   - http-test_service.yaml
   - mariadb_deployment.yaml
   - mariadb_service.yaml
+  - application_deployment.yaml
+  - application_service.yaml
