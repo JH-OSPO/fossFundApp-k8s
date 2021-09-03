@@ -44,10 +44,11 @@ spec:
                   name: mariadb
                   key: user_password
         
+      terminationGracePeriodSeconds: 30
       containers:
         - name: fossfund-app
           imagePullPolicy: Always
-          image: ghcr.io/jh-ospo/fossfund-flask:v0.24
+          image: ghcr.io/jh-ospo/fossfund-flask:v0.4
           ports:
             - containerPort: 5000
           env:
